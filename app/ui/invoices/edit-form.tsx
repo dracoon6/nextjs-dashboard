@@ -22,11 +22,11 @@ export default function EditInvoiceForm({
   const initialState: State = { message: null, errors: {} };
 
   // Create an adapter function that matches the signature expected by useActionState:
-  // (previousState: State, formData: FormData) => State | Promise<State>
-  const updateInvoiceAction = async (prevState: State, formData: FormData) => {
-    return updateInvoice(invoice.id, formData);
-  };
-  const [state, formAction] = useActionState(updateInvoiceAction, initialState);
+  const updateInvoiceAction = (prevState: State, formData: FormData) =>
+    updateInvoice(invoice.id, formData);
+
+  // Explicitly pass <State, FormData> to ensure the hook matches your State type
+  const [state, formAction] = useActionState<State, FormData>(updateInvoiceAction, initialState);
 
   return (
     <form action={formAction}>
