@@ -20,8 +20,13 @@ export default function EditInvoiceForm({
   customers: CustomerField[];
 }) {
   const initialState: State = { message: null, errors: {} };
-  const updateInvoiceWithId = updateInvoice.bind(null, invoice.id);
-  const [state, formAction] = useActionState(updateInvoiceWithId, initialState);
+
+  // Create an adapter function that matches the signature expected by useActionState:
+  // (previousState: State, formData: FormData) => State | Promise<State>
+  const updateInvoiceAction = async (prevState: State, formData: FormData) => {
+    return updateInvoice(invoice.id, formData);
+  };
+  const [state, formAction] = useActionState(updateInvoiceAction, initialState);
 
   return (
     <form action={formAction}>
